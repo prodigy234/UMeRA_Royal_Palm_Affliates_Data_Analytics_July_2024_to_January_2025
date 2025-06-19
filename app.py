@@ -58,11 +58,22 @@ st.markdown("""
 """)
 
 # Tabs for better structure
-summary_tab, trends_tab, affiliate_tab, download_tab, about_developer = st.tabs(["📋 Overview", "📈 Trends", "🤝 Top Performing Affiliates", "⬇️ Download", "👨‍💻 About the Developer"])
+summary_tab, trends_tab, affiliate_tab, download_tab, about_developer = st.tabs(["📋 Charts", "📈 Trends", "🤝 Top Performing Affiliates", "⬇️ Download", "👨‍💻 About the Developer"])
 
 
 with summary_tab:
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
+
+    # CSS to equalize chart heights
+    chart_style = """
+        <style>
+            .chart-box {
+                height: 350px;
+                overflow: hidden;
+            }
+        </style>
+    """
+    st.markdown(chart_style, unsafe_allow_html=True)
 
     with col1:
         st.subheader("Customers Distribution")
@@ -74,54 +85,15 @@ with summary_tab:
         st.pyplot(fig)
 
     with col2:
-        st.subheader("Affiliate Contribution Share")
+        # Stacked Bar Chart
+        st.subheader("Number of Customers Through Affiliates Per Month")
         fig, ax = plt.subplots(figsize=(5, 4))
-        df["Affiliate_Label"].value_counts().plot.pie(
-            ax=ax,
-            autopct="%1.1f%%",
-            colors=["#ff9999", "#66b3ff"],
-            startangle=90,
-            wedgeprops={'edgecolor': 'black'}
-        )
-        ax.set_ylabel("")
+        affiliate_by_month.plot(kind="bar", stacked=True, ax=ax, colormap="viridis")
+        ax.set_xlabel("Investment Month")
+        ax.set_ylabel("Count of Customers")
         fig.tight_layout()
         st.pyplot(fig)
 
-    with col3:
-        st.subheader("Customers Through Affiliates vs. Non-Affiliates")
-        fig, ax = plt.subplots(figsize=(5, 4))
-        sns.countplot(data=df, x="Affiliate_Label", hue="Affiliate_Label", palette="coolwarm", ax=ax, legend=False)
-        ax.set_xlabel("Customer Type")
-        ax.set_ylabel("Count")
-        fig.tight_layout()
-        st.pyplot(fig)
-
-# with summary_tab:
-#     col1, col2, col3 = st.columns(3)
-#     with col1:
-#         st.subheader("Customers Distribution")
-#         fig, ax = plt.subplots()
-#         sns.countplot(x=df["Came_Through_Affiliate"].map({True: "Affiliate", False: "Non-Affiliate"}), hue = df["Came_Through_Affiliate"].map({True: "Affiliate", False: "Non-Affiliate"}), palette="coolwarm", ax=ax, legend=False)
-#         st.pyplot(fig)
-
-#     with col2:
-#         st.subheader("Affiliate Contribution Share")
-#         fig, ax = plt.subplots()
-#         df["Came_Through_Affiliate"].value_counts().plot.pie(
-#             ax=ax,
-#             autopct="%1.1f%%",
-#             colors=["#ff9999", "#66b3ff"],
-#             startangle=90,
-#             wedgeprops={'edgecolor': 'black'}
-#         )
-#         ax.set_ylabel("")
-#         st.pyplot(fig)
-#     with col3:
-#         # Bar Chart
-#         st.subheader("Customers Through Affiliates vs. Non-Affiliates")
-#         fig, ax = plt.subplots()
-#         sns.countplot(x=df["Came_Through_Affiliate"].map({True: "Affiliate", False: "Non-Affiliate"}), hue = df["Came_Through_Affiliate"].map({True: "Affiliate", False: "Non-Affiliate"}), palette="coolwarm", ax=ax, legend = False)
-#         st.pyplot(fig)
 
 with trends_tab:
     st.subheader("Affiliate vs. Non-Affiliate Growth Over Months")
@@ -147,6 +119,21 @@ with trends_tab:
     st.subheader("Customer Type Distribution per Month (Heatmap)")
     fig, ax = plt.subplots()
     sns.heatmap(affiliate_by_month, cmap="coolwarm", annot=True, fmt="d", linewidths=0.5, ax=ax)
+    st.pyplot(fig)
+
+    # Stacked Bar Chart
+    st.subheader("Number of Customers Through Affiliates Per Month")
+    fig, ax = plt.subplots()
+    affiliate_by_month.plot(kind="bar", stacked=True, ax=ax, colormap="viridis")
+    ax.set_xlabel("Investment Month")
+    ax.set_ylabel("Count of Customers")
+    st.pyplot(fig)
+
+    # Pie Chart
+    st.subheader("Affiliate vs. Non-Affiliate Customers")
+    fig, ax = plt.subplots()
+    df["Came_Through_Affiliate"].value_counts().plot.pie(ax=ax, autopct="%1.1f%%", colors=["#ff9999", "#66b3ff"], startangle=90, wedgeprops={'edgecolor': 'black'})
+    ax.set_ylabel("")
     st.pyplot(fig)
 
 with affiliate_tab:
@@ -188,7 +175,7 @@ with download_tab:
     st.info("Ensure you interpret these results in the context of monthly marketing efforts and seasonal variations.")
 
 with about_developer:
-    st.markdown("# Knowing who developed this project")
+    st.markdown("# The brain behind this project")
 
     st.image("Gbenga.jpg", width=300)
     st.markdown("## **Kajola Gbenga**")
