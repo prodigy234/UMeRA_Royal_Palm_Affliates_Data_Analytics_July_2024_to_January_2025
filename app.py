@@ -32,9 +32,9 @@ st.markdown("""
 
 # Load data
 def load_data():
-    file_path = "ROYAL PALM RECEIPT & PORTFOLIO (3).xlsx"
+    file_path = "royal_palm_receipt_portfolio.xlsx"
     xls = pd.ExcelFile(file_path)
-    df = pd.read_excel(xls, sheet_name="PORTFOLIO")
+    df = pd.read_excel(xls, sheet_name="AFFILIATES")
     return df
 
 # Load & preprocess
@@ -136,6 +136,15 @@ with trends_tab:
     ax.set_ylabel("")
     st.pyplot(fig)
 
+    # Doughnut Pie Chart
+    st.subheader("Affiliate vs. Non-Affiliate Customers")
+    fig, ax = plt.subplots()
+    df["Came_Through_Affiliate"].value_counts().plot.pie(ax=ax, autopct="%1.1f%%", colors=["#ff9999", "#66b3ff"], startangle=90, wedgeprops={'edgecolor': 'black'})
+    ax.add_artist(plt.Circle((0, 0), 0.6, fc='white'))
+    ax.set_ylabel("")
+    st.pyplot(fig)
+
+
 with affiliate_tab:
 
     st.subheader("Top 10 Affiliates (Bubble Size = Number of investors brought in)")
@@ -165,14 +174,25 @@ with affiliate_tab:
     ax.axis("off")
     st.pyplot(fig)
 
-with download_tab:
-    st.subheader("📤 Export Cleaned Data")
-    df.to_excel("Cleaned_Affiliate_Report.xlsx", index=False)
-    with open("Cleaned_Affiliate_Report.xlsx", "rb") as f:
-        st.download_button("Download Excel Report", f, file_name="Cleaned_Affiliate_Report.xlsx")
+# with download_tab:
+#     st.subheader("📤 Export Cleaned Data")
+#     df.to_excel("Cleaned_Affiliate_Report.xlsx", index=False)
+#     with open("Cleaned_Affiliate_Report.xlsx", "rb") as f:
+#         st.download_button("Download Excel Report", f, file_name="Cleaned_Affiliate_Report.xlsx")
 
-    st.markdown("---")
-    st.info("Ensure you interpret these results in the context of monthly marketing efforts and seasonal variations.")
+# Word Report Download
+with download_tab:
+    st.markdown("### \U0001F4DD Download Full UMéRA Portfolio Analytics Report")
+    with open("UMéRA Royal Palm Data Analytics Report.docx", "rb") as doc_file:
+        st.download_button(
+            label="\U0001F4E5 Download Full Word Report",
+            data=doc_file,
+            file_name="UMeRA_RoyalPalm_Analytics_Report.docx",
+            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        )
+
+        st.markdown("---")
+        st.info("Ensure you interpret these results in the context of monthly marketing efforts and seasonal variations.")
 
 with about_developer:
     st.markdown("# The brain behind this project")
