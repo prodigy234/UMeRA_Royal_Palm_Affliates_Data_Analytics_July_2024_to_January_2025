@@ -2,7 +2,7 @@ streamlit
 pandas
 matplotlib
 seaborn
-wordcloud==1.8.1
+wordcloud
 squarify
 plotly
 openpyxl
