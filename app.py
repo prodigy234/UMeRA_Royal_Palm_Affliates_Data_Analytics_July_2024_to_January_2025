@@ -167,12 +167,12 @@ with affiliate_tab:
     )
     st.plotly_chart(fig, use_container_width=True)
 
-    st.subheader("Top Performing Affiliates Word Cloud")
-    wordcloud = WordCloud(width=800, height=400, background_color='white').generate(" ".join(df[df["AFFILIATE"] != "NIL"]["AFFILIATE"]))
-    fig, ax = plt.subplots()
-    ax.imshow(wordcloud, interpolation="bilinear")
-    ax.axis("off")
-    st.pyplot(fig)
+    # st.subheader("Top Performing Affiliates Word Cloud")
+    # wordcloud = WordCloud(width=800, height=400, background_color='white').generate(" ".join(df[df["AFFILIATE"] != "NIL"]["AFFILIATE"]))
+    # fig, ax = plt.subplots()
+    # ax.imshow(wordcloud, interpolation="bilinear")
+    # ax.axis("off")
+    # st.pyplot(fig)
 
 # with download_tab:
 #     st.subheader("📤 Export Cleaned Data")
