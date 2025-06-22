@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from wordcloud import WordCloud
+# from wordcloud import WordCloud
 import squarify
 import plotly.express as px
 from datetime import datetime
@@ -192,7 +192,8 @@ with download_tab:
         )
 
         st.markdown("---")
-        st.info("Ensure you interpret these results in the context of monthly marketing efforts and seasonal variations.")
+        st.info("This report presents a seven month in-depth analytics of the Royal Palm investment portfolio data for the period spanning July 2024 to January 2025.")
+        st.info("The objective is to identify trends, investors’ behaviour, distribution of investments across different land types and unit types, age segmentation, and most importantly a robust analytics on the affiliates and their pivotal roles during the seven month period.")
 
 with about_developer:
     st.markdown("# The brain behind this project")
